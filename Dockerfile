@@ -26,12 +26,12 @@ RUN apt-get install -y wget git vim
 # ubuntu:14.04 default has 2.7.5 installed
 
 COPY get-pip.py /tmp/get-pip.py
-RUN python /tmp/get-pip.py
+CMD python /tmp/get-pip.py
 
-RUN pip install -U pip setuptools
+CMD pip install -U pip setuptools
 
 # enable notebooks
-RUN pip install \
+CMD pip install \
     ipython \
     jupyter \
     jupyterthemes
@@ -41,6 +41,6 @@ RUN mkdir -p /root/.jupyter/
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # set dark theme
-RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
+CMD jt -t onedork -tf georgiaserif -nf droidsans -T -N
 
 ENTRYPOINT ["/bin/bash"]

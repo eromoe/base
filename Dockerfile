@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Mithril
+MAINTAINER eromoe|mithril
 
 # China Customize
 COPY update_source.sh /tmp/update_source.sh

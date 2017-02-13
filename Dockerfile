@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER eromoe/mithril
+MAINTAINER eromoe|mithril
 
 # China Customize
 COPY update_source.sh /tmp/update_source.sh
@@ -30,7 +30,7 @@ RUN apt-get install -y python3.5-dev
 RUN apt-get install -y wget git vim
 
 # set python 3.5 as default
-RUN mv /usr/bin/python /usr/bin/python.old && ln -sf /usr/bin/python3.5 /usr/bin/python
+RUN ln -sf /usr/bin/python3.5 /usr/bin/python
 
 COPY get-pip.py /tmp/get-pip.py
 CMD python /tmp/get-pip.py

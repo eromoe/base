@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Mithril
+MAINTAINER eromoe/mithril
 
 # China Customize
 COPY update_source.sh /tmp/update_source.sh
@@ -20,10 +20,17 @@ ENV LC_ALL en_US.UTF-8
 RUN apt-get update && \
     apt-get install -y build-essential libcurl4-openssl-dev libxml2-dev libxslt1-dev libpq-dev
 
+# install python 3.5
+
+RUN apt-get install -y software-properties-common && \
+    add-apt-repository ppa:fkrull/deadsnakes && \
+    apt-get update
+
+RUN apt-get install -y python3.5-dev
 RUN apt-get install -y wget git vim
 
-# install python 2.7
-# ubuntu:14.04 default has 2.7.5 installed
+# set python 3.5 as default
+RUN mv /usr/bin/python /usr/bin/python.old && ln -sf /usr/bin/python3.5 /usr/bin/python
 
 COPY get-pip.py /tmp/get-pip.py
 RUN python /tmp/get-pip.py
@@ -42,5 +49,6 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # set dark theme
 RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
+
 
 ENTRYPOINT ["/bin/bash"]

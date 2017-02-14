@@ -25,7 +25,7 @@ RUN apt-get update && \
 RUN apt-get install -y wget git vim
 
 # install python 2.7
-# ubuntu:14.04 default has 2.7.5 installed
+# ubuntu:14.04 default has 2.7.5 installed, but it is strange that python not exist while docker build using ubuntu image, add here
 RUN apt-get install -y python-dev
 
 COPY get-pip.py /tmp/get-pip.py

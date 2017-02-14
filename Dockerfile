@@ -1,6 +1,8 @@
 FROM ubuntu:14.04
 MAINTAINER eromoe|mithril
 
+SHELL ["/bin/bash", "-c"]
+
 # China Customize
 COPY update_source.sh /tmp/update_source.sh
 RUN bash /tmp/update_source.sh
@@ -33,12 +35,12 @@ RUN apt-get install -y wget git vim
 RUN ln -sf /usr/bin/python3.5 /usr/bin/python
 
 COPY get-pip.py /tmp/get-pip.py
-CMD python /tmp/get-pip.py
+RUN python /tmp/get-pip.py
 
-CMD pip install -U pip setuptools
+RUN pip install -U pip setuptools
 
 # enable notebooks
-CMD pip install \
+RUN pip install \
     ipython \
     jupyter \
     jupyterthemes
@@ -48,7 +50,6 @@ RUN mkdir -p /root/.jupyter/
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # set dark theme
-CMD jt -t onedork -tf georgiaserif -nf droidsans -T -N
-
+RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
 
 ENTRYPOINT ["/bin/bash"]

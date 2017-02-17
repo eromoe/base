@@ -29,7 +29,7 @@ RUN apt-get install -y software-properties-common && \
     apt-get update
 
 RUN apt-get install -y python3.5-dev
-RUN apt-get install -y wget git vim
+RUN apt-get install -y wget git vim curl
 
 # set python 3.5 as default
 RUN ln -sf /usr/bin/python3.5 /usr/bin/python

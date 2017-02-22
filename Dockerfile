@@ -1,29 +1,28 @@
 FROM ubuntu:14.04
 MAINTAINER eromoe|mithril
 
-# China Customize
+# China Customize, update sources
 COPY update_source.sh /tmp/update_source.sh
 RUN bash /tmp/update_source.sh
 
 COPY pip.conf /etc/pip.conf
 
 # Set the locale
-
 RUN locale-gen "en_US.UTF-8"
 RUN dpkg-reconfigure locales
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# install build tools & lib dependencies
-
+# Install build tools & lib dependencies
 RUN apt-get update && \
     apt-get install -y build-essential libcurl4-openssl-dev libxml2-dev libxslt1-dev libpq-dev
 
+# Install some useful tools for further modification and testing
 RUN apt-get install -y wget git vim curl
 
-# install python 2.7
-# ubuntu:14.04 default has 2.7.5 installed, but it is strange that python not exist while docker build using ubuntu image, add here
+# Install python 2.7
+# Ubuntu:14.04 docker image doesn't contain python 2.7
 RUN apt-get install -y python-dev
 
 COPY get-pip.py /tmp/get-pip.py
@@ -31,7 +30,7 @@ RUN python /tmp/get-pip.py
 
 RUN pip install -U pip setuptools
 
-# enable notebooks
+# Enable python notebooks
 RUN pip install \
     ipython \
     jupyter \
@@ -41,7 +40,7 @@ RUN pip install \
 RUN mkdir -p /root/.jupyter/
 COPY jupyter_notebook_config.py /root/.jupyter/
 
-# set dark theme
+# Set notebook dark theme
 RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
 
 ENTRYPOINT ["/bin/bash"]

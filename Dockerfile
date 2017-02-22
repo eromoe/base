@@ -1,8 +1,6 @@
 FROM ubuntu:14.04
 MAINTAINER eromoe|mithril
 
-SHELL ["/bin/bash", "-c"]
-
 # China Customize
 COPY update_source.sh /tmp/update_source.sh
 RUN bash /tmp/update_source.sh
@@ -22,7 +20,7 @@ ENV LC_ALL en_US.UTF-8
 RUN apt-get update && \
     apt-get install -y build-essential libcurl4-openssl-dev libxml2-dev libxslt1-dev libpq-dev
 
-RUN apt-get install -y wget git vim
+RUN apt-get install -y wget git vim curl
 
 # install python 2.7
 # ubuntu:14.04 default has 2.7.5 installed, but it is strange that python not exist while docker build using ubuntu image, add here

@@ -13,6 +13,7 @@ RUN dpkg-reconfigure locales
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
+ENV PYTHONIOENCODING utf-8
 
 # Install build tools & lib dependencies
 RUN apt-get update && \
@@ -41,6 +42,10 @@ RUN mkdir -p /root/.jupyter/
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Set notebook dark theme
-RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
+# RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
+
+COPY run_jupyter.sh /run_jupyter.sh
 
 ENTRYPOINT ["/bin/bash"]
+
+# CMD ["/run_jupyter.sh"]

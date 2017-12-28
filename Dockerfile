@@ -1,11 +1,16 @@
-FROM ubuntu:14.04
+# ubuntu 16.04, https://github.com/phusion/baseimage-docker
+FROM phusion/baseimage
+
 MAINTAINER eromoe|mithril
 
 # China Customize, update sources
 COPY update_source.sh /tmp/update_source.sh
 RUN bash /tmp/update_source.sh
 
-COPY pip.conf /etc/pip.conf
+RUN echo \
+  && echo '[global]' >> /etc/pip.conf \
+  && echo 'index-url = https://mirrors.aliyun.com/pypi/simple' >> /etc/pip.conf \
+  && echo "registry = https://registry.npm.taobao.org" >> /etc/npmrc
 
 # Set the locale
 RUN locale-gen "en_US.UTF-8"
@@ -14,6 +19,9 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV PYTHONIOENCODING utf-8
+
+# allow `docker logs` show python app logs
+ENV PYTHONUNBUFFERED 0
 
 # Install build tools & lib dependencies
 RUN apt-get update && \

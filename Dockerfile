@@ -50,7 +50,7 @@ RUN mkdir -p /root/.jupyter/
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Set notebook dark theme
-# RUN jt -t onedork -tf georgiaserif -nf droidsans -T -N
+# jt -t chesterish -T -N
 
 COPY run_jupyter.sh /run_jupyter.sh
 

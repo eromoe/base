@@ -88,10 +88,30 @@ check_os_release()
       then
         os_release=ubuntu1210
         echo "$os_release"
-     elif echo "$os_release"|grep "Ubuntu 14.04" >/dev/null 2>&1
-     then
-        os_release=ubuntu1404
-        echo "$os_release"
+      elif echo "$os_release"|grep "Ubuntu 14.04" >/dev/null 2>&1
+      then
+          os_release=ubuntu1404
+          echo "$os_release"
+      elif echo "$os_release"|grep "Ubuntu 14.10" >/dev/null 2>&1
+      then
+          os_release=ubuntu1410
+          echo "$os_release"
+      elif echo "$os_release"|grep "Ubuntu 16.04" >/dev/null 2>&1
+      then
+          os_release=ubuntu1604
+          echo "$os_release"
+      elif echo "$os_release"|grep "Ubuntu 16.10" >/dev/null 2>&1
+      then
+          os_release=ubuntu1610
+          echo "$os_release"
+      elif echo "$os_release"|grep "Ubuntu 17.04" >/dev/null 2>&1
+      then
+          os_release=ubuntu1704
+          echo "$os_release"
+      elif echo "$os_release"|grep "Ubuntu 17.10" >/dev/null 2>&1
+      then
+          os_release=ubuntu1710
+          echo "$os_release"
       else
         os_release=""
         echo "$os_release"
@@ -259,6 +279,32 @@ EOF
 apt-get update
 }
 
+
+update_ubuntu1604_apt_source()
+{
+echo -e "\033[40;32mBackup the original configuration file,new name and path is /etc/apt/sources.list.back.\n\033[40;37m"
+cp -fp /etc/apt/sources.list /etc/apt/sources.list.back
+cat > /etc/apt/sources.list <<EOF
+#16.04
+#deb包
+deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse  
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse  
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse  
+deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse  
+##测试版源  
+deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse  
+# 源码  
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse  
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse  
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse  
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse  
+##测试版源  
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse  
+EOF
+apt-get update
+}
+
+
 update_debian6_apt_source()
 {
 echo -e "\033[40;32mBackup the original configuration file,new name and path is /etc/apt/sources.list.back.\n\033[40;37m"
@@ -355,6 +401,21 @@ ubuntu1210)
   ;;
 ubuntu1404)
   update_ubuntu1404_apt_source
+  ;;
+ubuntu1410)
+  update_ubuntu1410_apt_source
+  ;;
+ubuntu1604)
+  update_ubuntu1604_apt_source
+  ;;
+ubuntu1610)
+  update_ubuntu1610_apt_source
+  ;;
+ubuntu1704)
+  update_ubuntu1704_apt_source
+  ;;
+ubuntu1710)
+  update_ubuntu1710_apt_source
   ;;
 debian6)
   update_debian6_apt_source

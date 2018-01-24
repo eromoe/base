@@ -3,7 +3,12 @@ FROM phusion/baseimage
 
 MAINTAINER eromoe|mithril
 
-# China Customize, update sources
+ARG PYTHON_VERSION="3.6"
+ARG DARK_THEME=0
+
+SHELL ["/bin/bash", "-c"]
+
+# China Customize
 COPY update_source.sh /tmp/update_source.sh
 RUN bash /tmp/update_source.sh
 
@@ -19,21 +24,27 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV PYTHONIOENCODING utf-8
+ENV PIP_INDEX_URL "https://mirrors.aliyun.com/pypi/simple"
 
-# allow `docker logs` show python app logs
+# Allow `docker logs` show python app logs
 ENV PYTHONUNBUFFERED 0
 
 # Install build tools & lib dependencies
 RUN apt-get update && \
     apt-get install -y build-essential libcurl4-openssl-dev libxml2-dev libxslt1-dev libpq-dev
 
-# Install some useful tools for further modification and testing
-RUN apt-get install -y wget git vim curl
+# install python
 
-# Install python 2.7
-# Ubuntu:14.04 docker image doesn't contain python 2.7
-RUN apt-get install -y python-dev
+RUN apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
+    apt-get update
 
+RUN apt-get install -y python${PYTHON_VERSION}-dev wget git vim curl
+
+# set python 3.5 as default
+RUN ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+
+# because download is very slow in some place, so bundle get-pip.py
 COPY get-pip.py /tmp/get-pip.py
 RUN python /tmp/get-pip.py
 

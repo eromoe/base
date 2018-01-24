@@ -3,6 +3,8 @@ FROM phusion/baseimage
 
 MAINTAINER eromoe|mithril
 
+ENV PYTHON_VERSION 3.6
+
 SHELL ["/bin/bash", "-c"]
 
 # China Customize
@@ -33,14 +35,13 @@ RUN apt-get update && \
 # install python 3.5
 
 RUN apt-get install -y software-properties-common && \
-    add-apt-repository ppa:fkrull/deadsnakes && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
     apt-get update
 
-RUN apt-get install -y python3.5-dev
-RUN apt-get install -y wget git vim curl
+RUN apt-get install -y python3.6-dev wget git vim curl
 
 # set python 3.5 as default
-RUN ln -sf /usr/bin/python3.5 /usr/bin/python
+RUN ln -sf /usr/bin/python3.6 /usr/bin/python
 
 # because download is very slow in some place, so bundle get-pip.py
 COPY get-pip.py /tmp/get-pip.py

@@ -8,15 +8,6 @@ ARG DARK_THEME=0
 
 SHELL ["/bin/bash", "-c"]
 
-# China Customize
-COPY update_source.sh /tmp/update_source.sh
-RUN bash /tmp/update_source.sh
-
-RUN echo \
-  && echo '[global]' >> /etc/pip.conf \
-  && echo 'index-url = https://mirrors.aliyun.com/pypi/simple' >> /etc/pip.conf \
-  && echo "registry = https://registry.npm.taobao.org" >> /etc/npmrc
-
 # Set the locale
 RUN locale-gen "en_US.UTF-8"
 RUN dpkg-reconfigure locales
@@ -24,7 +15,6 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV PYTHONIOENCODING utf-8
-ENV PIP_INDEX_URL "https://mirrors.aliyun.com/pypi/simple"
 
 # Allow `docker logs` show python app logs
 ENV PYTHONUNBUFFERED 0
@@ -41,7 +31,7 @@ RUN apt-get install -y software-properties-common && \
 
 RUN apt-get install -y python${PYTHON_VERSION}-dev wget git vim curl
 
-# set python 3.5 as default
+# set new installed python as default
 RUN ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
 # because download is very slow in some place, so bundle get-pip.py
@@ -64,6 +54,19 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 # jt -t chesterish -T -N
 
 COPY run_jupyter.sh /run_jupyter.sh
+
+
+# China Customize at last for dockerhub
+COPY update_source.sh /tmp/update_source.sh
+RUN bash /tmp/update_source.sh
+
+RUN echo \
+  && echo '[global]' >> /etc/pip.conf \
+  && echo 'index-url = https://mirrors.aliyun.com/pypi/simple' >> /etc/pip.conf \
+  && echo "registry = https://registry.npm.taobao.org" >> /etc/npmrc
+
+ENV PIP_INDEX_URL "https://mirrors.aliyun.com/pypi/simple"
+
 
 ENTRYPOINT ["/bin/bash"]
 

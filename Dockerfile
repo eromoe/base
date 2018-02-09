@@ -3,7 +3,7 @@ FROM phusion/baseimage
 
 MAINTAINER eromoe|mithril
 
-ARG PYTHON_VERSION="3.6"
+ARG PYTHON_VERSION="2.7"
 ARG DARK_THEME=0
 
 SHELL ["/bin/bash", "-c"]
@@ -47,7 +47,7 @@ RUN pip install -U pip setuptools
 
 # Enable python notebooks
 RUN pip install \
-    ipython \
+    "ipython<6.0.0" \
     jupyter \
     jupyterthemes
 
